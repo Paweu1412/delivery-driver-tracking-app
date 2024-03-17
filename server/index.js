@@ -1,31 +1,21 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import Users from './users.json' assert { type: "json" };
+import routes from './routes/app.routes.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = 3001;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use((_req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+app.use(cookieParser());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
 
-
-const router = express.Router();
-app.use('/api', router);
-
-router.get('/isUserExists', (req, res) => {
-  const { identifier, password } = req.query;
-
-  const user = Users.find(user => user.id == identifier && user.password == password);
-  
-  if (user) {
-    res.json({ success: true });
-  } else {
-    res.json({ success: false, message: 'Nieprawidłowy identyfikator lub hasło' });
-  }
-});
+app.use('/api', routes);
 
 app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));

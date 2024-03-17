@@ -13,19 +13,21 @@ const Login = () => {
     if (!identifier || !password) {
       setError('Proszę wypełnić wszystkie pola');
     } else {
-      fetch(`http://localhost:3001/api/isUserExists?identifier=${identifier}&password=${password}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            setError('');
-            window.location.href = '/dashboard';
-          } else {
-            setError(data.message);
-          }
-        })
-        .catch(error => {
-          setError(`Wystąpił błąd: ${error.message}`);
-        });
+      fetch(`http://localhost:3001/api/loginUser?identifier=${identifier}&password=${password}`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/status';
+        } else {
+          setError(data.message);
+        }
+      })
+      .catch(error => {
+        setError(`Wystąpił błąd: ${error.message}`);
+      });
     }
   };
 
