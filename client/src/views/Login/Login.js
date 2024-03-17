@@ -59,7 +59,7 @@ const Login = () => {
           </div>
 
           <Button 
-            color="black" 
+            color="blue" 
             className="mt-4" 
             fullWidth 
             onClick={handleLogin}
