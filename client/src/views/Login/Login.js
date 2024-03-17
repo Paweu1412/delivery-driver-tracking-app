@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconUser, IconKey, IconAlertCircle } from '@tabler/icons-react';
+import { IconUser, IconKey } from '@tabler/icons-react';
 import { Input, Button, Alert } from '@mantine/core';
 
 import Logo from '../../assets/logo.jpg';
@@ -22,6 +22,9 @@ const Login = () => {
           } else {
             setError(data.message);
           }
+        })
+        .catch(error => {
+          setError(`Wystąpił błąd: ${error.message}`);
         });
     }
   };
@@ -62,7 +65,7 @@ const Login = () => {
             Zaloguj się
           </Button>
 
-          {error && <Alert variant="filled" color="red" className="mt-4" icon={<IconAlertCircle />}>{error}</Alert>}
+          {error && <Alert variant="filled" color="red" className="mt-4">{error}</Alert>}
         </div>
       </div>
     </div>
