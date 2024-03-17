@@ -8,6 +8,7 @@ export const loginUser = (req, res) => {
   if (user) {
     res.cookie('identifier', identifier);
     res.cookie('password', password);
+    
     res.json({ success: true });
   } else {
     res.json({ success: false, message: 'Nieprawidłowy identyfikator lub hasło' });
@@ -31,3 +32,10 @@ export const isUserExists = (req, res) => {
     res.json({ success: false });
   }
 }
+
+export const logoutUser = (req, res) => {
+  res.clearCookie('identifier');
+  res.clearCookie('password');
+
+  res.json({ success: true });
+};

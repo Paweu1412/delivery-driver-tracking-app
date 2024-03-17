@@ -13,7 +13,7 @@ const Login = () => {
     if (!identifier || !password) {
       setError('Proszę wypełnić wszystkie pola');
     } else {
-      fetch(`http://localhost:3001/api/loginUser?identifier=${identifier}&password=${password}`, {
+      fetch(`http://${window.location.hostname}:3001/api/loginUser?identifier=${identifier}&password=${password}`, {
         method: 'GET',
         credentials: 'include'
       })
@@ -32,9 +32,9 @@ const Login = () => {
   };
 
   return (
-    <div className="Login flex w-screen h-screen flex-col items-center justify-center">
-      <img src={Logo} alt="Logo" className="size-[180px] -mt-10" />
-
+    <div className="Login flex w-screen flex-col items-center">
+      <img src={Logo} alt="Logo" className="size-[180px] mt-5" />
+      
       <div className="form mt-5">
         <h1 className="text-2xl font-bold text-center">Zaloguj się do systemu</h1>
 

@@ -8,6 +8,7 @@ import '@mantine/core/styles.css';
 
 import Login from './views/Login/Login';
 import Status from './views/Status/Status';
+import List from './views/List/List';
 
 const root = createRoot(document.getElementById('root'));
 
@@ -18,6 +19,7 @@ root.render(
         <Routes>
           <Route path="*" element={<Login />} />
           <Route path="/status" element={<Status />} />
+          <Route path="/list" element={<List />} />
         </Routes>
       </BrowserRouter>
     </MantineProvider>
