@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Alert, Notification } from "@mantine/core";
 import { IconLogout } from '@tabler/icons-react';
 import { StatusButton } from "../../components/StatusButton";
-
 import Logo from '../../assets/logo.jpg';
 
 const Status = () => {
   const [userData, setUserData] = useState({});
   const [notification, setNotification] = useState(null);
+  const notificationTimeoutRef = useRef(null); // Dodaj referencję do timeout
 
   useEffect(() => {
     fetch(`http://${window.location.hostname}:3001/api/isUserExists`, {
@@ -44,10 +44,20 @@ const Status = () => {
   }
 
   const showNotification = (message, color) => {
+    // Jeżeli istnieje aktywne powiadomienie, anuluj poprzednie
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current);
+    }
+
     setNotification({ message, color });
-    setTimeout(() => {
+
+    // Ustaw nowy timeout
+    const timeoutRef = setTimeout(() => {
       setNotification(null);
     }, 5000); // Hides notification after 5 seconds
+
+    // Zapisz referencję do aktualnego timeout, aby móc go anulować
+    notificationTimeoutRef.current = timeoutRef;
   };
 
   return (
