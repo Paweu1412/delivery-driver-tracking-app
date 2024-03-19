@@ -5,14 +5,26 @@ export const StatusButton = ({ label, color, handler, ...props }) => {
 
   const handleMouseDown = () => {
     const id = setTimeout(() => {
-      handler(); // Obsługa zdarzenia po sekundzie przytrzymania
-      clearTimeout(id); // Wyczyść timer
+      handler(); 
+      clearTimeout(id); 
     }, 1000);
-    setTimeoutId(id); // Ustaw id timera w stanie komponentu
+    setTimeoutId(id); 
   };
 
   const handleMouseUp = () => {
-    clearTimeout(timeoutId); // Wyczyść timer, jeśli przycisk zostanie zwolniony przed upływem sekundy
+    clearTimeout(timeoutId);
+  };
+
+  const handleTouchStart = () => {
+    const id = setTimeout(() => {
+      handler();
+      clearTimeout(id);
+    }, 1000);
+    setTimeoutId(id);
+  };
+
+  const handleTouchEnd = () => {
+    clearTimeout(timeoutId);
   };
 
   return (
@@ -21,6 +33,8 @@ export const StatusButton = ({ label, color, handler, ...props }) => {
       style={{ backgroundColor: color }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       {...props}
     >
       <p className="text-xl">{label}</p>

@@ -63,7 +63,7 @@ const Status = () => {
   return (
     <div className="Status text-white w-screen items-center flex flex-col">
       {userData.name ? (
-        <div className="w-screen max-w-[450px] h-screen relative">
+        <div className="w-screen max-w-[450px] h-[100svh] relative">
           <div className="flex w-full justify-center">
             <img src={Logo} alt="Logo" className="mt-5 size-[180px]" />
           </div>
