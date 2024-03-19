@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Alert } from "@mantine/core";
+import { Alert, Notification } from "@mantine/core";
 import { IconLogout } from '@tabler/icons-react';
 import { StatusButton } from "../../components/StatusButton";
 
@@ -7,6 +7,7 @@ import Logo from '../../assets/logo.jpg';
 
 const Status = () => {
   const [userData, setUserData] = useState({});
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     fetch(`http://${window.location.hostname}:3001/api/isUserExists`, {
@@ -42,14 +43,19 @@ const Status = () => {
     });
   }
 
-  // {navigator.geolocation.getCurrentPosition(position => {console.log(position.coords.latitude, position.coords.longitude)})}
+  const showNotification = (message, color) => {
+    setNotification({ message, color });
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000); // Hides notification after 5 seconds
+  };
 
   return (
-    <div className="Status text-white">
+    <div className="Status text-white w-screen items-center flex flex-col">
       {userData.name ? (
-        <>          
-          <div className="flex w-full justify-center mt-5">
-            <img src={Logo} alt="Logo" className="size-[180px]" />
+        <div className="w-screen max-w-[450px] h-screen relative">
+          <div className="flex w-full justify-center">
+            <img src={Logo} alt="Logo" className="mt-5 size-[180px]" />
           </div>
 
           <div className="annotation flex m-3 mb-0 mt-6">
@@ -67,16 +73,35 @@ const Status = () => {
             color="blue" 
             className="m-3"
           >
-            Wybierz przycisk z informacją, o której chcesz poinformować restaurację. 
-            W przypadku wciśnięcia oraz potwierdzenia go, zostanie on wyświetlony załodze.
+            Wybierz przycisk z informacją, o której chcesz poinformować załogę. 💪
           </Alert>
 
           <div className="buttons block m-3 -mt-2">
-            <StatusButton label="Zamówienie" color="#2596be" onClick={() => console.log('blue')} />
+            <StatusButton label="W dostawie" color="#B22222" handler={() => {
+              showNotification("Status został zaaktualizowany. 😊", "#B22222");
+            }} />
 
-            <StatusButton label="Rachunek" color="#DC143C" onClick={() => console.log('orange')} />
+            <StatusButton label="Powrót do restauracji" color="#008000" handler={() => {
+              showNotification("Status został zaaktualizowany. 😊", "#008000");
+            }} />
+
+            <StatusButton label="Przerwa" color="#4169E1" handler={() => {
+              showNotification("Status został zaaktualizowany. 😊", "#4169E1");
+            }} />
           </div>
-        </>
+
+          {notification && (
+            <div className="absolute bottom-2 w-full">
+              <Notification
+                title={notification.message}
+                color={notification.color}
+                withBorder
+                onClose={() => setNotification(null)}
+                className="m-3 text-xl"
+              />
+            </div>
+          )}
+        </div>
       ) : null}
     </div>
   );
