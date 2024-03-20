@@ -60,7 +60,7 @@ const Login = () => {
 
           <Button 
             color="blue" 
-            className="mt-4" 
+            className="mt-4 shadow-lg" 
             fullWidth 
             onClick={handleLogin}
           >

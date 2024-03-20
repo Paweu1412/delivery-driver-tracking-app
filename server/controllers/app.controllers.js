@@ -1,5 +1,15 @@
 import Users from '../users.json' assert { type: "json" };
 
+let deliveryDrivers = {};
+
+const addDeliveryDriver = (id, name, status) => {
+  deliveryDrivers[id] = { id, name, status };
+}
+
+const removeDeliveryDriver = id => {
+  delete deliveryDrivers[id];
+}
+
 export const loginUser = (req, res) => {
   const { identifier, password } = req.query;
 
@@ -33,7 +43,7 @@ export const isUserExists = (req, res) => {
   }
 }
 
-export const logoutUser = (req, res) => {
+export const logoutUser = (_req, res) => {
   res.clearCookie('identifier');
   res.clearCookie('password');
 
