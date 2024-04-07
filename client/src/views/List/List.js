@@ -1,15 +1,33 @@
-import Logo from '../../assets/logo.jpg';
+import { useEffect, useState } from 'react';
+import { Card } from '../../components/Card';
 
 const List = () => {
+  const [activeUsers, setActiveUsers] = useState(['1']);
+
+  useEffect(() => {
+    setInterval(() => {
+      fetch(`http://${window.location.hostname}:3001/api/getActiveUsers`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.success) {
+            setActiveUsers(data.activeUsers);
+          }
+        })
+        .catch(error => {
+          console.error(`Wystąpił błąd: ${error.message}`);
+        });
+    }, 2000);
+  }, []);
+
   return (
-    <div className="List">
-      {/* <div className="header flex m-3 h-full items-center">
-        <img src={Logo} alt="Logo" className="size-[180px] z-10" />
-        
-        <div className="flex-1 h-[150px] flex rounded-xl bg-black mr-2 text-white items-center justify-center">
-          <div className="absolute size-[170px] bg-[#feb836] rounded-full left-[80px] top-[20px]"></div>
-        </div>
-      </div> */}
+    <div className="List p-4 flex w-full h-full justify-center">
+      {activeUsers.map((id) => (
+        <Card key={id} id={id} />
+      ))}
     </div>
   )
 };

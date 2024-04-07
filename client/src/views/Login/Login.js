@@ -17,51 +17,51 @@ const Login = () => {
         method: 'GET',
         credentials: 'include'
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          window.location.href = '/status';
-        } else {
-          setError(data.message);
-        }
-      })
-      .catch(error => {
-        setError(`Wystąpił błąd: ${error.message}`);
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = '/status';
+          } else {
+            setError(data.message);
+          }
+        })
+        .catch(error => {
+          setError(`Wystąpił błąd: ${error.message}`);
+        });
     }
   };
 
   return (
     <div className="Login flex w-screen flex-col items-center">
       <img src={Logo} alt="Logo" className="size-[180px] mt-5" />
-      
+
       <div className="form mt-5">
         <h1 className="text-2xl font-bold text-center">Zaloguj się do systemu</h1>
 
         <div className="credentials mt-6 w-[300px]">
           <div className="login mb-4">
-            <Input 
-              placeholder="Identyfikator" 
-              leftSection={<IconUser size={16} />} 
-              value={identifier} 
+            <Input
+              placeholder="Identyfikator"
+              leftSection={<IconUser size={16} />}
+              value={identifier}
               onChange={(event) => setIdentifier(event.currentTarget.value)}
             />
           </div>
 
           <div className="password">
-            <Input 
-              placeholder="Hasło" 
-              type="password" 
-              leftSection={<IconKey size={16} />} 
-              value={password} 
+            <Input
+              placeholder="Hasło"
+              type="password"
+              leftSection={<IconKey size={16} />}
+              value={password}
               onChange={(event) => setPassword(event.currentTarget.value)}
             />
           </div>
 
-          <Button 
-            color="blue" 
-            className="mt-4 shadow-lg" 
-            fullWidth 
+          <Button
+            color="blue"
+            className="mt-4 shadow-lg"
+            fullWidth
             onClick={handleLogin}
           >
             Zaloguj się

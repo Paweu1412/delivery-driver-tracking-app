@@ -6,8 +6,17 @@ export const DutySwitch = ({ onDataLoggedChange }) => {
 
   const handleDutySwitch = () => {
     const newDutyState = !duty;
-    setDuty(newDutyState);
-    onDataLoggedChange(newDutyState); 
+    fetch(`http://${window.location.hostname}:3001/api/setDuty?duty=${newDutyState}`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setDuty(newDutyState);
+          onDataLoggedChange(newDutyState);
+        }
+      })
   };
 
   const handleMouseDown = () => {
@@ -35,7 +44,7 @@ export const DutySwitch = ({ onDataLoggedChange }) => {
   };
 
   return (
-    <button 
+    <button
       className={`logout flex w-[30%] ml-3 rounded-[4px] justify-center items-center shadow-lg transition-transform duration-200 ease-in-out active:scale-95 ${duty ? 'bg-green-600' : 'bg-red-500'}`}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}

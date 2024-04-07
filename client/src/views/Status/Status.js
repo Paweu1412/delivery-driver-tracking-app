@@ -8,6 +8,7 @@ import Logo from '../../assets/logo.jpg';
 const Status = () => {
   const [userData, setUserData] = useState({});
   const [notification, setNotification] = useState(null);
+  const [status, setStatus] = useState(null);
   const [dutySwitchLogged, setDutySwitchLogged] = useState(false);
   const notificationTimeoutRef = useRef(null);
 
@@ -16,17 +17,22 @@ const Status = () => {
       method: 'GET',
       credentials: 'include'
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        setUserData(data.userData)
-      } else {
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setUserData(data.userData);
+
+          // if (data.lastStatus != 0) {
+          //   setDutySwitchLogged(true);
+          //   setStatus(data.lastStatus);
+          // }
+        } else {
+          window.location.href = '/';
+        }
+      })
+      .catch(error => {
         window.location.href = '/';
-      }
-    })
-    .catch(error => {
-      window.location.href = '/';
-    });
+      });
   }, []);
 
   const handleLogout = () => {
@@ -34,15 +40,15 @@ const Status = () => {
       method: 'GET',
       credentials: 'include'
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/';
+        }
+      })
+      .catch(error => {
         window.location.href = '/';
-      }
-    })
-    .catch(error => {
-      window.location.href = '/';
-    });
+      });
   }
 
   const showNotification = (message, color) => {
@@ -78,9 +84,9 @@ const Status = () => {
           </div>
 
           <div className="flex m-3">
-            <Alert 
-              variant="filled" 
-              color="blue" 
+            <Alert
+              variant="filled"
+              color="blue"
               className="w-[70%]"
             >
               Wybierz przycisk z informacją, o której chcesz poinformować załogę. 💪
@@ -90,15 +96,18 @@ const Status = () => {
           </div>
 
           <div className="buttons block m-3 -mt-2">
-            <StatusButton label="W dostawie" color="#B22222" disabled={!dutySwitchLogged} handler={() => {
+            <StatusButton label="W dostawie" color="#B22222" disabled={!dutySwitchLogged || status === 1} handler={() => {
+              setStatus(1);
               showNotification("Status został zaaktualizowany. 😊", "#B22222");
             }} />
 
-            <StatusButton label="Powrót do restauracji" color="#008000" disabled={!dutySwitchLogged} handler={() => {
+            <StatusButton label="Powrót do restauracji" color="#008000" disabled={!dutySwitchLogged || status === 2} handler={() => {
+              setStatus(2);
               showNotification("Status został zaaktualizowany. 😊", "#008000");
             }} />
 
-            <StatusButton label="Przerwa" color="#4169E1" disabled={!dutySwitchLogged} handler={() => {
+            <StatusButton label="Przerwa" color="#4169E1" disabled={!dutySwitchLogged || status === 3} handler={() => {
+              setStatus(3);
               showNotification("Status został zaaktualizowany. 😊", "#4169E1");
             }} />
           </div>
